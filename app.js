@@ -9,7 +9,7 @@ import bodyParser from 'body-parser';
 const app = express();
 const port = process.env.PORT || 10000;
 
-const DEBUGGING_LOCAL = 1;
+const DEBUGGING_LOCAL = 0;
 
 // CORS related
 var cors_origin = "https://nvidia-contest-react-app.onrender.com";
