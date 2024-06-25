@@ -3,11 +3,13 @@
 import kosmos_query from "./nvidia_api.js";
 
 import express from "express";
-import cors from "cors";
+//import cors from "cors";
+import bodyParser from 'body-parser';
+
 const app = express();
 const port = process.env.PORT || 10000;
 
-const DEBUGGING_LOCAL = 0;
+const DEBUGGING_LOCAL = 1;
 
 // CORS related
 var cors_origin = "https://nvidia-contest-react-app.onrender.com";
@@ -30,14 +32,28 @@ function error(status, msg) {
   return err;
 }
 
+app.use(function (req, res, next) {
+  // console.log('Time: %d', Date.now())
+  res.append('Access-Control-Allow-Origin', cors_origin)
+  res.append('Access-Control-Allow-Headers', 'Content-Type')
+
+  next()
+})
+
+var rawBodyParser = bodyParser.raw({type: "image/jpeg"})
+
 // example: http://localhost:3000/api/users/?api-key=foo
-app.get('/user/message', cors(corsOptions), async function (req, res) {
-  var query = req.query['query'];
-  var image_data;
-  const response = await kosmos_query(query, image_data);
-  res.send(response ["choices"][0]["message"]["content"]);
-  //res.send(JSON.stringify(response));
-});
+app.post('/user/message',
+    rawBodyParser,
+    //cors(corsOptions),
+    async function (req, res) {
+      var query = req.query['query'];
+      const response = await kosmos_query(query, req.body);
+
+      console.log(response);
+      res.send(response);
+    }
+);
 
 app.listen(port);
 console.log(`Nvidia contest web services app started on port ${port}`);

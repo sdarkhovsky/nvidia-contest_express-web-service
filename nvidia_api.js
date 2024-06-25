@@ -2,7 +2,9 @@ import axios from 'axios';
 import { readFile } from 'node:fs/promises';
 import fs from 'fs'
 
-async function kosmos_query(query, image_data) {
+const DEBUG_READ_FROM_LOCAL_FILE = 0;
+
+async function kosmos_query(query, imageBuffer) {
   const invokeUrl = "https://ai.api.nvidia.com/v1/vlm/microsoft/kosmos-2";
 
   const headers = {
@@ -10,9 +12,17 @@ async function kosmos_query(query, image_data) {
     "Accept": "application/json"
   };
 
-  image_data = await readFile("sample_image.jpeg");
+  var imageB64;
 
-  const imageB64 = Buffer.from(image_data).toString('base64');
+  if (DEBUG_READ_FROM_LOCAL_FILE) {
+    const image_data = await readFile("sample_image.jpeg");
+    imageB64 = Buffer.from(image_data).toString('base64');
+  } else {
+    imageB64 = imageBuffer.toString('base64');
+  }
+
+  console.log("imageB64.length:", imageB64.length);
+
   if (imageB64.length > 180_000) {
     throw new Error("To upload larger images, use the assets API (see docs)");
   }
@@ -30,8 +40,8 @@ async function kosmos_query(query, image_data) {
   };
 
   const response = await axios.post(invokeUrl, payload, { headers: headers, responseType: 'json' });
-  console.log("nvidia_api response:\n", JSON.stringify(response.data));
-  return(response.data);  
+  // console.log("nvidia_api response:\n", JSON.stringify(response.data));
+  return(response.data["choices"][0]["message"]["content"]);
 }
 
 export default kosmos_query;
