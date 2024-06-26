@@ -48,7 +48,13 @@ app.post('/user/message',
     //cors(corsOptions),
     async function (req, res) {
       var query = req.query['query'];
-      const response = await kosmos_query(query, req.body);
+
+      var response = "Failed to answer";
+      try {
+        response = await kosmos_query(query, req.body);
+      } catch (e) {
+        response = "Failed to answer. " + e.name + ": " + e.message;
+      }
 
       console.log(response);
       res.send(response);
