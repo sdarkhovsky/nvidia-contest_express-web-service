@@ -13,7 +13,7 @@ Unfortunately, my Web programming experience was not very extensive. I had to le
 the front-end and NodeJS, ExpressJS for the back-end server. Currently the system is far from implementing
 what was planned. But it's alive at https://nvidia-contest-react-app.onrender.com/
 
-See the companion React App projects at https://github.com/sdarkhovsky/nvidia-contest-react-app
+See the companion React App and RAG projects at https://github.com/sdarkhovsky/nvidia-contest-react-app
 and https://github.com/sdarkhovsky/nvidia-contest-rag
 
 
