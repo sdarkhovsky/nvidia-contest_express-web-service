@@ -14,6 +14,8 @@ async function kosmos_query(query, imageBuffer) {
 
   var imageB64;
 
+  console.log("kosmos_query");
+
   if (DEBUG_READ_FROM_LOCAL_FILE) {
     const image_data = await readFile("sample_image.jpeg");
     imageB64 = Buffer.from(image_data).toString('base64');

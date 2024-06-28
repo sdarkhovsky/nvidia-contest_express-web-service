@@ -37,6 +37,8 @@ app.use(function (req, res, next) {
   res.append('Access-Control-Allow-Origin', cors_origin)
   res.append('Access-Control-Allow-Headers', 'Content-Type')
 
+  console.log("app.use");
+
   next()
 })
 
@@ -50,6 +52,8 @@ app.post('/user/message',
       var query = req.query['query'];
 
       var response = "Failed to answer";
+
+      console.log("app.post");
       try {
         response = await kosmos_query(query, req.body);
       } catch (e) {
